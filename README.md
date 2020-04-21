@@ -1,2 +1,0 @@
-# youtubeClone
-Created with CodeSandbox
