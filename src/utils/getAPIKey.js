@@ -1,1 +1,1 @@
-export default (key = "AIzaSyCAQP6h355FbjGAr3SlaqFCUZVvYVwGLRY");
+export default "AIzaSyCAQP6h355FbjGAr3SlaqFCUZVvYVwGLRY";

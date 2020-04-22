@@ -8,39 +8,50 @@ import { MainVideo, SearchBar, VideoList } from "./components";
 import { youtube, apikey } from "./utils";
 
 export default function App() {
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState("dogs");
   const [loading, setLoading] = useState(false);
   const [videos, setVideos] = useState([]);
-  const [selectedVideo, setSelectedVideo] = useState({});
+  const [selectedVideo, setSelectedVideo] = useState(null);
 
   useEffect(() => {
     setLoading(true);
-    const fetchData = async () => {
-      const { items: response } = await youtube(keyword);
 
-      setVideos(response);
-      setSelectedVideo(response[0]);
+    const fetchData = async q => {
+      const {
+        data: { items }
+      } = await youtube.get("search", {
+        params: {
+          part: "snippet",
+          maxResults: 5,
+          key: apikey,
+          q
+        }
+      });
+      console.log(items);
+
+      setVideos(items);
+      setSelectedVideo(items[0]);
       setLoading(false);
-      console.log(response);
     };
 
-    fetchData();
+    fetchData(keyword);
   }, [keyword]);
 
-  if (loading) return <p>Loading...</p>;
-  if (!loading) {
-    return (
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <SearchBar onEnter={setKeyword} />
-        </Grid>
-        <Grid item xs={8}>
-          <MainVideo video={selectedVideo} loading={loading} />
-        </Grid>
-        <Grid item xs={4}>
-          <VideoList videos={videos} />
-        </Grid>
+  useEffect(() => {}, [keyword]);
+
+  console.log(videos);
+  if (!selectedVideo) return null;
+  return (
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <SearchBar onEnter={setKeyword} />
       </Grid>
-    );
-  }
+      <Grid item xs={8}>
+        <MainVideo video={selectedVideo} loading={loading} />
+      </Grid>
+      <Grid item xs={4}>
+        <VideoList videos={videos} loading={loading} />
+      </Grid>
+    </Grid>
+  );
 }

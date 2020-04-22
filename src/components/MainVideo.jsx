@@ -1,15 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Grid, Paper, Typography } from "@material-ui/core";
 
-const MainVideo = ({ video, loading }) => {
+const MainVideo = ({
+  video: {
+    snippet: { title, channelTitle, description },
+    id: { videoId }
+  },
+  loading
+}) => {
   if (loading) return <Typography variant="caption">Loading</Typography>;
 
+  // console.log(`Video: ${video}`);
   if (!loading) {
-    console.log(video);
-    const {
-      snippet: { title, channelTitle, description },
-      id: { videoId }
-    } = video;
+    // const {
+    //   snippet: { title, channelTitle, description },
+    //   id: { videoId }
+    // } = video;
 
     const videoUrl = `https://www.youtube.com/embed/${videoId}`;
     return (
